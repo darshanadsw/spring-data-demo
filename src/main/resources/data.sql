@@ -28,4 +28,4 @@ insert into dat_Field(id,field_name,field_value,dat_case_id) values (6,'6 field 
 
 insert into dat_Field(id,field_name,field_value,dat_case_id) values (7,'7 field 1', '6 value 1',7);
 insert into dat_Field(id,field_name,field_value,dat_case_id) values (8,'7 field 2', '6 value 2',7);
-insert into dat_Field(id,field_name,field_value,dat_case_id) values (9,'EHR', 'YES',7);
+insert into dat_Field(id,field_name,field_value,dat_case_id) values (9,'EHR', 'NO',7);

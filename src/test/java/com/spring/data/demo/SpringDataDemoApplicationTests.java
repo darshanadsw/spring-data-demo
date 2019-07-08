@@ -75,8 +75,37 @@ public class SpringDataDemoApplicationTests {
 
         List<DatCase> result = em.createQuery(c).getResultList();
 
-        result.forEach(o-> System.out.println(o.getId()));
+        result.forEach(o-> System.out.println(o));
 
+    }
+
+    @Test
+    public void test(){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<DatCase> c = cb.createQuery(DatCase.class);
+
+        Root<DatCase> root = c.from(DatCase.class);
+
+        Subquery<DatField> sq = c.subquery(DatField.class);
+        Root<DatCase> sqDat = sq.correlate(root);
+        Join<DatCase,DatField> datField = sqDat.join("datFields");
+        sq.select(datField)
+                .where(cb.equal(datField.get("fieldName"),"EHR"));
+
+        Subquery<DatField> sq2 = c.subquery(DatField.class);
+        Root<DatCase> sqDat2 = sq2.correlate(root);
+        Join<DatCase,DatField> datField2 = sqDat2.join("datFields");
+        sq2.select(datField2)
+                .where(cb.equal(datField2.get("fieldName"),"EHR"),
+                        cb.equal(datField2.get("fieldValue"),"YES"));
+
+        c.distinct(true).select(root)
+                .where(cb.or(cb.exists(sq2),cb.not(cb.exists(sq))));
+
+
+        List<DatCase> result = em.createQuery(c).getResultList();
+
+        System.out.println(result.size());
     }
 
 }
